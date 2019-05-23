@@ -1,4 +1,4 @@
-import urllib.request
+from urllib.request import Request, urlopen
 import json
 import bs4
 import time
@@ -51,8 +51,10 @@ def getFromWebsite(hasil, idx):
     pageResto = []
     baseUrl = 'https://www.zomato.com/'
     pageUrl = 'https://www.zomato.com/bandung/restaurants?page=' + str(idx)
-    with urllib.request.urlopen(pageUrl) as respon:
-        page = respon.read()
+    req = Request(pageUrl, headers={'User-Agent': 'Mozilla/5.0'})
+    page = urlopen(req).read()
+    # with urllib.request.urlopen(pageUrl) as respon:
+    #     page = respon.read()
     sp = bs4.BeautifulSoup(page, 'html.parser')
     for i in sp.find_all("a", href=True):
         link = str(i['href'])

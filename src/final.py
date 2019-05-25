@@ -60,7 +60,7 @@ def getFromWebsite(hasil, idx):
     sp = bs4.BeautifulSoup(page, 'html.parser')
     for i in sp.find_all("a", href=True):
         link = str(i['href'])
-        if (link.startswith("/bandung/restaurants")):
+        if (link.startswith("/bandung/restaurants?page=")):
             if (link not in pageResto):
                 pageResto.append(link)
     for halamanResto in pageResto:

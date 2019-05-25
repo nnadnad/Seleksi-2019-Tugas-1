@@ -102,7 +102,7 @@ def main():
     resto = []
     for i in range(1,5):
         getFromWebsite(resto, i)
-        time.sleep(0.5)
+        time.sleep(2)
     convertJson(resto)
 
 if __name__ == "__main__":

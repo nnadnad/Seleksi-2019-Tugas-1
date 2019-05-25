@@ -9,8 +9,10 @@ import os
 
 def getDataRestoran(url):
     hasilFinal = []
-    with urllib.request.urlopen(url) as response:
-        page = response.read()
+    # with urllib.request.urlopen(url) as response:
+    #     page = response.read()
+    req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+    page = urlopen(req).read()
     sp = bs4.BeautifulSoup(page, 'html.parser')
 
     # resto dan daerahnya

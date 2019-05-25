@@ -7,13 +7,14 @@ import copy
 import os
 
 
+
 def getDataRestoran(url):
     hasilFinal = []
     # with urllib.request.urlopen(url) as response:
     #     page = response.read()
-    req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-    page = urlopen(req).read()
-    sp = bs4.BeautifulSoup(page, 'html.parser')
+    req = Request(url,None, headers={"user-agent": "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36"})
+    page = urlopen(req, timeout=2).read()
+    sp = bs4.BeautifulSoup(page, 'html5lib')
 
     # resto dan daerahnya
     resto = sp.find("span", class_="hdn").strip().split(",")
@@ -53,11 +54,11 @@ def getFromWebsite(hasil, idx):
     pageResto = []
     baseUrl = 'https://www.zomato.com/'
     pageUrl = 'https://www.zomato.com/bandung/restaurants?page=' + str(idx)
-    req = Request(pageUrl, headers={'User-Agent': 'Mozilla/5.0'})
-    page = urlopen(req).read()
+    req = Request(pageUrl, None, headers={"user-agent": "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36"})
+    page = urlopen(req, timeout=2).read()
     # with urllib.request.urlopen(pageUrl) as respon:
     #     page = respon.read()
-    sp = bs4.BeautifulSoup(page, 'html.parser')
+    sp = bs4.BeautifulSoup(page, 'html5lib')
     for i in sp.find_all("a", href=True):
         link = str(i['href'])
         if (link.startswith("/bandung/restaurants?page=")):
@@ -96,7 +97,8 @@ def convertJson(listOfResto):
     pathFile = 'data/'
     jsonName = 'data.json'
     with open(os.path.join(pathFile, jsonName), 'w') as f:
-        json.dump(data, f, indent=4)
+        f.write(json.dumps(data, indent=2))
+        # json.dump(data, f, indent=4)
 
 def main():
     resto = []

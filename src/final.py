@@ -94,11 +94,11 @@ def convertJson(listOfResto):
 
         data.append(copy.deepcopy(dataJson))
 
-    pathFile = 'data/'
+    pathFile = '../data/'
     jsonName = 'data.json'
-    with open(os.path.join(pathFile, jsonName), 'w') as f:
-        f.write(json.dumps(data, indent=2))
-        # json.dump(data, f, indent=4)
+    with open(os.path.join(pathFile, jsonName), 'w', encoding = 'utf8') as f:
+        # f.write(json.dumps(data, indent=2))
+        json.dump(data, f, ensure_ascii = False, indent=4)
 
 def main():
     resto = []

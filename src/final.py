@@ -12,9 +12,9 @@ def getDataRestoran(url):
     hasilFinal = []
     # with urllib.request.urlopen(url) as response:
     #     page = response.read()
-    req = Request(url,None, headers={"user-agent": "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36"})
-    page = urlopen(req, timeout=2).read()
-    sp = bs4.BeautifulSoup(page, 'html5lib')
+    req = requests.get(url, headers={"user-agent": "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36"})
+    # page = urlopen(req, timeout=2).read()
+    sp = bs4.BeautifulSoup(req.content.decode('utf-8', 'ignore').replace('\u200b', ''), 'html.parser')
 
     # resto dan daerahnya
     resto = sp.find("span", class_="hdn").strip().split(",")
@@ -54,14 +54,14 @@ def getFromWebsite(hasil, idx):
     pageResto = []
     baseUrl = 'https://www.zomato.com/'
     pageUrl = 'https://www.zomato.com/bandung/restaurants?page=' + str(idx)
-    req = Request(pageUrl, None, headers={"user-agent": "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36"})
-    page = urlopen(req, timeout=2).read()
+    req = requests.get(pageUrl, headers={"user-agent": "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36"}, timeout=5)
+    # page = urlopen(req).read()
     # with urllib.request.urlopen(pageUrl) as respon:
     #     page = respon.read()
-    sp = bs4.BeautifulSoup(page, 'html5lib')
+    sp = bs4.BeautifulSoup(req.text, 'html.parser')
     for i in sp.find_all("a", href=True):
         link = str(i['href'])
-        if (link.startswith("/bandung/restaurants?page=")):
+        if (link.startswith("/bandung/restaurants")):
             if (link not in pageResto):
                 pageResto.append(link)
     for halamanResto in pageResto:
